@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:calculatorApp/button.dart';
+import 'const.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,6 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Calculator(),
     );
   }
@@ -18,52 +19,54 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
-  String output = '0';
+  String output = "0";
 
-  String _output = '0';
-  double num1 = 0;
-  double num2 = 0;
-  String operand = '';
+  String _output = "0";
+  double num1 = 0.0;
+  double num2 = 0.0;
+  String operand = "";
 
   buttonPressed(String buttonText) {
-    if (buttonText == 'CLEAR') {
-      _output = '0';
-      num1 = 0;
-      num2 = 0;
-      operand = '';
-    } else if (buttonText == '+' ||
-        buttonText == '-' ||
-        buttonText == 'x' ||
-        buttonText == '/') {
+    if (buttonText == "C") {
+      _output = "0";
+      num1 = 0.0;
+      num2 = 0.0;
+      operand = "";
+    } else if (buttonText == "+" ||
+        buttonText == "-" ||
+        buttonText == "÷" ||
+        buttonText == "x") {
       num1 = double.parse(output);
+
       operand = buttonText;
+
       _output = '0';
-    } else if (buttonText == '.') {
-      if (_output.contains('.')) {
-        print('Invalid input');
+    } else if (buttonText == ".") {
+      if (_output.contains(".")) {
+        print("Already conatains a decimals");
         return;
       } else {
         _output = _output + buttonText;
       }
-    } else if (buttonText == '=') {
+    } else if (buttonText == "=") {
       num2 = double.parse(output);
-      if (operand == '+') {
+
+      if (operand == "+") {
         _output = (num1 + num2).toString();
       }
-      if (operand == '-') {
+      if (operand == "-") {
         _output = (num1 - num2).toString();
       }
-
-      if (operand == 'x') {
+      if (operand == "x") {
         _output = (num1 * num2).toString();
       }
-      if (operand == '/') {
+      if (operand == "÷") {
         _output = (num1 / num2).toString();
       }
 
-      num1 = 0;
-      num2 = 0;
-      operand = '0';
+      num1 = 0.0;
+      num2 = 0.0;
+      operand = "";
     } else {
       _output = _output + buttonText;
     }
@@ -75,18 +78,25 @@ class _CalculatorState extends State<Calculator> {
     });
   }
 
-  Widget myButton(buttonText) {
+  Widget myButton({buttonText, colour}) {
     return Expanded(
       child: Container(
-        color: Colors.blueGrey,
-        child: OutlineButton(
+        margin: EdgeInsets.symmetric(
+          vertical: 8.0,
+        ),
+        child: RawMaterialButton(
           child: Text(
             buttonText,
             style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontFamily: 'Comfortaa',
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.w400,
             ),
           ),
+          elevation: 0.0,
+          fillColor: colour,
+          shape: CircleBorder(),
           padding: EdgeInsets.all(24.0),
           onPressed: () => buttonPressed(buttonText),
         ),
@@ -97,12 +107,12 @@ class _CalculatorState extends State<Calculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Normal Calculator'),
-          backgroundColor: Colors.grey,
-        ),
+        backgroundColor: kDarkBackground,
         body: Container(
+          // padding: EdgeInsets.all(8.0),
+          margin: EdgeInsets.all(12.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Container(
                 padding: EdgeInsets.symmetric(
@@ -113,50 +123,59 @@ class _CalculatorState extends State<Calculator> {
                 child: Text(
                   output,
                   style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Comfortaa',
+                    color: kBlueText,
+                    fontSize: 64,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
-              Expanded(
-                child: Divider(),
-              ),
+              // Expanded(
+              //   child: Divider(),
+              // ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  myButton('1'),
-                  myButton('2'),
-                  myButton('3'),
-                  myButton('+'),
+                  myButton(buttonText: 'C', colour: kDarkButton1),
+                  myButton(buttonText: '±', colour: kDarkButton1),
+                  myButton(buttonText: '%', colour: kDarkButton1),
+                  myButton(buttonText: '÷', colour: kDarkButton1),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  myButton('4'),
-                  myButton('5'),
-                  myButton('6'),
-                  myButton('-'),
+                  myButton(buttonText: '7'),
+                  myButton(buttonText: '8'),
+                  myButton(buttonText: '9'),
+                  myButton(buttonText: 'x', colour: kDarkButton1),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  myButton('7'),
-                  myButton('8'),
-                  myButton('9'),
-                  myButton('x'),
+                  myButton(buttonText: '4'),
+                  myButton(buttonText: '5'),
+                  myButton(buttonText: '6'),
+                  myButton(buttonText: '+', colour: kDarkButton1),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  myButton('.'),
-                  myButton('0'),
-                  myButton('.00'),
-                  myButton('/'),
+                  myButton(buttonText: '1'),
+                  myButton(buttonText: '2'),
+                  myButton(buttonText: '3'),
+                  myButton(buttonText: '-', colour: kDarkButton1),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  myButton('CLEAR'),
-                  myButton('='),
+                  myButton(buttonText: '.'),
+                  myButton(buttonText: '0'),
+                  myButton(buttonText: '00'),
+                  myButton(buttonText: '=', colour: kBlueText),
                 ],
               ),
             ],
